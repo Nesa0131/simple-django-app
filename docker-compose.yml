@@ -1,18 +1,6 @@
 version: '3.8'
 
 services:
-  db:
-    build: ./db
-    image: postgres:13
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: mydb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
-
   web:
     build: ./django-app
     image: simple-django-app
@@ -21,8 +9,8 @@ services:
       - ./django-app:/app
     ports:
       - "8000:8000"
-    depends_on:
-      - db
+    environment:
+      - DATABASE_URL=sqlite:///db.sqlite3
 
 volumes:
   db_data:
